@@ -1,0 +1,98 @@
+server {
+    server_name awaker.us www.awaker.us;
+
+    location /static/ {
+        root /project/cianer/public/;
+        expires 30d;
+    }
+
+    location /media/ {
+        root /project/cianer/public/;
+        expires 30d;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /flower/ {
+        rewrite ^/flower/(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:5555;
+        proxy_set_header Host $host;
+    }
+}
+
+server {
+    server_name aiohttp.awaker.us;
+
+    location / {
+        proxy_pass http://127.0.0.1:8125;
+        proxy_set_header Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}
+
+server {
+    server_name bottle.awaker.us;
+
+    location / {
+        proxy_pass http://127.0.0.1:8124;
+        proxy_set_header Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}
+
+server {
+    server_name aiohttp.awaker.us;
+
+    location / {
+        proxy_pass http://127.0.0.1:8125;
+        proxy_set_header Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}
+
+server {
+    server_name flask.awaker.us;
+
+    location / {
+        proxy_pass http://127.0.0.1:8124;
+        proxy_set_header Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}
+
+server {
+    server_name tornado.awaker.us;
+
+    location / {
+        proxy_pass http://127.0.0.1:8126;
+        proxy_set_header Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}
+
+server {
+    server_name wsgiref.awaker.us;
+
+    location / {
+        proxy_pass http://127.0.0.1:8123;
+        proxy_set_header Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}

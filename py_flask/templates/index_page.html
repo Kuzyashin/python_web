@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Flask python</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="static/index.css">
+</head>
+<body>
+	<div class="title_container">
+		<h1 class="title">Weather App</h1>
+	</div>
+	<div class="description_block">
+		<p>
+			This is simple weather app using OpenWeatherMap API.
+		</p>
+		<p>
+			App build with python Flask framework
+		</p>
+	</div>
+<div class="main_block">
+		<div class="form_block">
+			<form method="post" action="" class="city_name_form">
+        <p> City: <input type="text" name="city" value="{{ city }}"> </p>
+        <p> <input type="submit" value="Check weather"> </p>
+      </form>
+		</div>
+		<div class="result_block">
+			<h4>City : {{ city }}</h4>
+			<p>Weather Description : {{ weather }}</p>
+			<p>Current temperature : {{ temp }} C</p>
+		</div>
+	</div>
+</body>
+</html>

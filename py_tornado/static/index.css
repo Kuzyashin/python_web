@@ -1,0 +1,17 @@
+.title_container {
+  text-align: center;
+}
+
+.description_block {
+  text-align: center;
+}
+
+.form_block {
+  padding-top: 1rem;
+  text-align: center;
+}
+
+.result_block {
+  align-content: right;
+  text-align: center;
+}
