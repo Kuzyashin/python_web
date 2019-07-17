@@ -29,7 +29,7 @@ def get_weather_data(city):
 @app.route('/', method='GET')
 @app.route('/', method='POST')
 def index():
-    city = request.forms.get('city', None)
+    city = request.forms.get('city', 'Moscow')
     data = get_weather_data(escape(city))
     return template('./templates/index_page.html', **data )
 

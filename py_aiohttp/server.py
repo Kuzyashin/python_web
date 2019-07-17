@@ -43,11 +43,11 @@ async def index(request):
 
 app = web.Application()
 aiohttp_jinja2.setup(app,
-    loader=jinja2.FileSystemLoader('./weather/templates/'))
+    loader=jinja2.FileSystemLoader('./templates/'))
 app.add_routes([web.get('/', index),
                 web.post('/', index)
                 ])
 
-app.add_routes([web.static('/static', './weather/static')])
+app.add_routes([web.static('/static', './static')])
 
 web.run_app(app, path='localhost', port=8127)
