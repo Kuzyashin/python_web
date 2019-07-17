@@ -1,17 +1,23 @@
 from html import escape
-from urllib.request import urlopen
 from urllib.error import HTTPError
 import json
+import aiohttp
 from aiohttp import web
 import aiohttp_jinja2
 import jinja2
 
 
-def get_weather_data(city):
+async def fetch(session, url):
+    async with session.get(url) as response:
+        return await response.text()
+
+
+async def get_weather_data(city):
     try:
         url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid=b22d3e5ca3f379627e04afd55f5623c4&units=metric'.format(city)
-        response = urlopen(url)
-        raw_data = json.loads(response.read().decode('utf-8'))
+        async with aiohttp.ClientSession() as session:
+            response = await fetch(session, url)
+        raw_data = json.loads(response)
         data = {
             'city': raw_data['name'],
             'weather': raw_data['weather'][0]['description'],
@@ -32,8 +38,8 @@ async def index(request):
     try:
         city = data['city']
     except Exception:
-        city = ''
-    data = get_weather_data(escape(city))
+        city = 'Moscow'
+    data = await get_weather_data(escape(city))
     response = aiohttp_jinja2.render_template('index_page.html',
                                               request,
                                               data)
