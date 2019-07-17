@@ -1,17 +1,19 @@
 from html import escape
-from urllib.request import urlopen
 from urllib.error import HTTPError
 import json
 from tornado import ioloop, web
 from tornado.escape import json_decode
+from tornado.httpclient import AsyncHTTPClient
 from tornado.web import StaticFileHandler
 
 
-def get_weather_data(city):
+
+async def get_weather_data(city):
+    http_client = AsyncHTTPClient()
     try:
         url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid=b22d3e5ca3f379627e04afd55f5623c4&units=metric'.format(city)
-        response = urlopen(url)
-        raw_data = json.loads(response.read().decode('utf-8'))
+        response = await http_client.fetch(url)
+        raw_data = json.loads(response.body.decode('utf-8'))
         data = {
             'city': raw_data['name'],
             'weather': raw_data['weather'][0]['description'],
@@ -28,14 +30,14 @@ def get_weather_data(city):
 
 
 class Index(web.RequestHandler):
-    city = ''
-    data = get_weather_data(escape(city))
-    def get(self):
-        self.render('templates/index_page.html', **self.data)
-    def post(self):
+    async def get(self):
+        city = 'Moscow'
+        data = await get_weather_data(escape(city))
+        self.render('templates/index_page.html', **data)
+    async def post(self):
         city = self.request.body.decode().split('=')[-1]
-        self.data = get_weather_data(escape(city))
-        self.render('templates/index_page.html', **self.data)
+        data = await get_weather_data(escape(city))
+        self.render('templates/index_page.html', **data)
 
 def make_app():
     return web.Application([
